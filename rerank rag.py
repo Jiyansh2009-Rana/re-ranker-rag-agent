@@ -9,6 +9,7 @@ from langchain_text_splitters import RecursiveCharacterTextSplitter
 from io import BytesIO
 import PyPDF2
 from dotenv import load_dotenv
+import uvicorn
 
 load_dotenv()
 
@@ -82,7 +83,7 @@ def pdf_reader(file : bytes) -> str:
     
     return text
     
-@app.post("/Upload Data")
+@app.post("/Upload-Data")
 async def upload_pdf(file : UploadFile = File(...)):
     
     try:
@@ -147,11 +148,12 @@ def query_rag(basemodel : query):
     metadata_filter = {}
     
     rpc_params = {
-        "query_text" : user_query,
+        "query_text": user_query,
         "query_embedding": query_embedding,
         "match_count": 10,
-        "metadata_filter" : metadata_filter,        "vector_weight" : 0.7,
-        "keyword_weigth": 0.3
+        "metadata_filter": metadata_filter,
+        "vector_weight": 0.7,
+        "keyword_weight" :0.3
     }
     results = supabase.rpc("hybrid_search", rpc_params).execute()
     
@@ -176,9 +178,8 @@ def query_rag(basemodel : query):
         "answer" : answer 
     }
     
-                                                                              if __name__ == "__main__":
-    import uvicorn
-    uvicorn.run(app, host="0.0.0.0", port=8000)
+                                                                          if __name__ == "__main__":
+                                                                                uvicorn.run(app, host="0.0.0.0", port=8000)
       
                     
                     

@@ -1,0 +1,9 @@
+fastapi
+uvicorn
+pydantic
+requests
+supabase
+groq
+langchain-text-splitters
+PyPDF2
+python-dotenv
