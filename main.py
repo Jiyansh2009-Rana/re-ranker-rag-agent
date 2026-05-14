@@ -105,14 +105,21 @@ async def upload_pdf(file : UploadFile = File(...)):
         chunks = text_splitter.split_text(text)
         
         
+        data_to_insert = []
         for chunk in chunks:
+            
             embedding = get_jina_embeddings(chunk)
-            supabase.table("documents").insert({
-                "content": chunk,
-                "embedding": embedding,
-                "metadata": 
-                { "filename": file.filename}
-            }).execute()
+            data_to_insert.append({
+            "content": chunk,
+            "embedding": embedding,
+            "metadata": {"filename": file.filename}
+    })
+
+# Single network call instead of many
+        if data_to_insert:
+            
+            
+            supabase.table("documents").insert(data_to_insert).execute()
 
         return {
         "message": f"Successfully processed {len(chunks)} chunks from {file.filename}"
