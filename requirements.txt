@@ -7,3 +7,4 @@ groq
 langchain-text-splitters
 PyPDF2
 python-dotenv
+python-multipart
